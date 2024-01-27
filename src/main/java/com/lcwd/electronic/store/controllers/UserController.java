@@ -1,7 +1,9 @@
 package com.lcwd.electronic.store.controllers;
 
 import com.lcwd.electronic.store.dtos.ApiResponseMessage;
+import com.lcwd.electronic.store.dtos.PageableResponse;
 import com.lcwd.electronic.store.dtos.UserDto;
+import com.lcwd.electronic.store.entities.User;
 import com.lcwd.electronic.store.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +48,14 @@ public class UserController {
 
     //get all
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers(){
-        List<UserDto> allUser = userService.getAllUser();
-        return new ResponseEntity<>(allUser,HttpStatus.OK);
+    public ResponseEntity<PageableResponse<UserDto>> getAllUsers(
+            @RequestParam(value = "pageNumber",required = false,defaultValue = "0")int pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "10",required = false)int pageSize,
+            @RequestParam(value = "sortBy",required = false,defaultValue = "name")String sortBy,
+            @RequestParam(value = "sortDir",defaultValue = "asc",required = false)String sortDir
+            ){
+        PageableResponse<UserDto> pageableResponse = userService.getAllUser(pageNumber,pageSize,sortBy,sortDir);
+        return new ResponseEntity<>(pageableResponse,HttpStatus.OK);
     }
 
     //get single
