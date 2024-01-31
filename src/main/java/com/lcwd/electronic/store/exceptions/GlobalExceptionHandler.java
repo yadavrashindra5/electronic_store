@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -42,5 +41,16 @@ public class GlobalExceptionHandler {
             response.put(field,message);
         });
         return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadApiRequestException.class)
+    public ResponseEntity<ApiResponseMessage> resourceNotFoundException(BadApiRequestException e){
+        ApiResponseMessage responseMessage = ApiResponseMessage.builder()
+                .message(e.getMessage())
+                .success(false)
+                .status(HttpStatus.NOT_FOUND)
+                .build();
+        ResponseEntity<ApiResponseMessage>response=new ResponseEntity<>(responseMessage,HttpStatus.NOT_FOUND);
+        return response;
     }
 }
