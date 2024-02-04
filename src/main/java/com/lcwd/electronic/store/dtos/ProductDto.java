@@ -1,4 +1,5 @@
 package com.lcwd.electronic.store.dtos;
+import com.lcwd.electronic.store.entities.Category;
 import lombok.*;
 
 import java.util.Date;
@@ -19,4 +20,5 @@ public class ProductDto {
     private boolean stock;
     private int discountedPrice;
     private String productImageName;
+    private CategoryDto category;
 }
